@@ -1,5 +1,6 @@
 package main.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ public abstract class BasePage {
     this.url = url;
   }
 
+@Step("Loading page")
   public void loadPage() {
     driver.get(url);
   }

@@ -1,6 +1,8 @@
 package main.pages;
 
+import io.qameta.allure.Step;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -44,16 +46,20 @@ public class GooglePage extends BasePage {
   }
 
   public boolean dropDownContains(String value) {
-    List<WebElement> dropDownElements = driver.findElements(By.xpath("//*[@role='listbox']//li"));
-    boolean result = false;
-    for (WebElement citeElement : dropDownElements) {
-      if (citeElement.getText().contains(value)) {
-        result = true;
-      }
-    }
-    return result;
+    return driver.findElements(By.xpath("//*[@role='listbox']//li")).stream()
+        .map(WebElement::getText).anyMatch(text -> text.contains(value));
   }
 
+  public List<String> getDropDownValues() {
+    return driver.findElements(By.xpath("//*[@role='listbox']//li")).stream()
+        .map(WebElement::getText).collect(Collectors.toList());
+  }
+
+  public WebElement getGoogleLogo() {
+    return driver.findElement(By.xpath("//img[@alt='Google']"));
+  }
+
+  @Step("Accept temrs and conditions if possible")
   public void acceptTerms() {
     List<WebElement> buttons = driver.findElements(By.tagName("button"));
     if (buttons.size() >= 3) {

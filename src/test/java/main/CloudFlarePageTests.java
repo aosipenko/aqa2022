@@ -1,39 +1,68 @@
 package main;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import io.qameta.allure.Description;
+import main.pages.GooglePage;
+import org.assertj.core.api.SoftAssertions;
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class CloudFlarePageTests extends BaseTest {
 
+  private GooglePage googlePage = new GooglePage(driver);
+  private SoftAssertions assertions = new SoftAssertions();
 
-  @BeforeEach
-  public void preTest() {
-    System.out.println("I am ran before each test");
+  @Test
+  public void someTest() {
+    googlePage.loadPage();
+    googlePage.acceptTerms();
+
+    googlePage.setSearchValue("some search");
+    googlePage.clickSearchField();
+
+//    List<String> dropDownElements = googlePage.getDropDownValues();
+
+    assertions.assertThat(googlePage.getDropDownValues()).contains("as;dha;sdhaskj;dh");
+    assertions.assertThat(googlePage.getDropDownValues()).contains("some search engines");
+    assertions.assertThat(googlePage.getDropDownValues()).contains("some search");
+    assertions.assertThat(googlePage.getDropDownValues()).contains("some popular search engines");
+    assertions.assertThat(googlePage.getDropDownValues()).contains("some examples of search engine");
+    assertions.assertThat(googlePage.getDropDownValues()).contains("lknasdnlkanklsdlkn");
+
+    assertions.assertAll();
   }
 
   @Test
-  public void cloudFlareAcceptCookiesTest() {
-    System.out.println("Here we go to cloud flare and accept cookies");
+  @Description("blah blah description")
+  public void staleElementReferenceTest() {
+    try {
+      googlePage.loadPage();
+      googlePage.acceptTerms();
+
+      WebElement googleLogo = googlePage.getGoogleLogo();
+      googleLogo.click();
+
+      driver.navigate().refresh();
+
+      googleLogo.click();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
-  @Test
-  public void cloudFlareGoToLoginPageTest() {
-    System.out.println("Here we go to cloud flare login after accepting cookies");
+  @Test(dataProvider = "SearchProvider")
+  public void TestNGDataProvider(String dataInput, String dataInputTwo) {
+    System.out.println(dataInputTwo + ":" + dataInput);
   }
 
-  @AfterEach
-  public void closeTest() {
-    System.out.println("I am ran after each test");
+  @DataProvider(name = "SearchProvider")
+  public Object[][] getDataFromDataprovider() {
+    return new Object[][]
+        {
+            {"test1", "Guru99"},
+            {"test2", "Krishna"},
+            {"test3", "Bhupesh"}
+        };
   }
 
-  @AfterAll
-  public static void closeUp() {
-    System.out.println("This is ran once after all");
-  }
 }

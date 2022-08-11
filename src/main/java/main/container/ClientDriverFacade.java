@@ -3,6 +3,8 @@ package main.container;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class ClientDriverFacade {
 
@@ -13,6 +15,7 @@ public class ClientDriverFacade {
   private ClientDriverFacade() {
     WebDriverManager.chromedriver().setup();
     driver = new ChromeDriver();
+    DesiredCapabilities capabilities = new DesiredCapabilities();
   }
 
   public static ClientDriverFacade getInstance() {
