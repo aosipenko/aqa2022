@@ -1,6 +1,9 @@
 package main;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import main.pages.GooglePage;
 import org.junit.jupiter.api.AfterAll;
@@ -41,6 +44,14 @@ public class GooglePageTest extends BaseTest {
 
     googlePage.search(searchValue);
     Assertions.assertTrue(googlePage.hasSearchResultPresent(validationValue), "Searched value was not present!");
+  }
+
+  @Test
+  public void streamTest(int desiredLength) {
+    List<String> arrayList =
+        List.of("aapjaljk", "lkasdlkhasdlkjasdlkhb", "c", "daposkpoamsdpjapsd", "asdasdasdlkmklmlkmlkmlsdmflksdlfk");
+
+    arrayList.stream().map(s -> s.length()).filter(l -> l >= 10).anyMatch(l -> l == desiredLength);
   }
 
   private void validateDropdownContent(GooglePage googlePage, String value, boolean isPresent) {
