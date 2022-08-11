@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class CloudFlarePageTests {
-
-  public static WebDriver driver;
+public class CloudFlarePageTests extends BaseTest {
 
 
   @BeforeEach
