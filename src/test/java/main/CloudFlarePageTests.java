@@ -64,5 +64,4 @@ public class CloudFlarePageTests extends BaseTest {
             {"test3", "Bhupesh"}
         };
   }
-
 }
